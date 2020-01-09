@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <title>视频</title>
+    <meta name="Description" content="UtoVR全景播放器">
+    <!--引入引导js 动态下载播放器-->
+    <script language="javascript" type="text/javascript" src="./player/UtoVRPlayerGuide.js"></script>
+    <script src="./video.js">/* 创建VD对象 */</script>
+    <script src="./GPS_VID_20190905_145607.js"> /* 加载VD.data 数组， time 保存的是数字，与数组的index相同 */</script>
+    <script type="text/javascript" src="./classic/iclient8c/libs/SuperMap.Include.js"></script>
+    <script type="text/javascript" src="./mapinit.js"></script>
+    <script type="text/javascript" src="./UtoVRsetConfig.js"></script>
+    <style>
+		@-ms-viewport { width:device-width; }
+		@media only screen and (min-device-width:800px) { html { overflow:hidden; } }
+		html body { width: 100%; height: 100%; overflow: hidden; padding: 0px; margin: 0px; }
+		#container{position: fixed;height: 200px;width: 300px;bottom: 43px;left: 0;z-index: 9998; background-position:center center; background-color:transparent; border:0;}
+        #panoDesk {position: absolute;width: 100%;height: 100%;left:0px;top:0px;overflow: hidden;}
+        .userIsControl{position: absolute; top: 0;right: 25px;z-index: 9999; box-sizing: border-box;width: 108px;height: 24px;padding: 5px;overflow: hidden;font-size: 14px;line-height: 14px;color: rgb(141, 255, 141); background-color: rgba(0, 0, 0, 0.65);}
+        .userIsControl.no{color: #bbb;}
+        .userIsControl.no .c, .userIsControl .a{display: inline-block;}
+        .userIsControl.no .a, .userIsControl .c{display: none;}
+        #btn.btn{position: absolute; top: 0;right: 0;z-index: 9999; box-sizing: border-box;width: 24px;height: 24px;padding: 5px;overflow: hidden; background-color: rgba(0, 0, 0, 0.45);}
+        #btn.open{background-image: url('./skin/open.png');background-repeat: no-repeat; background-size: 14px 14px; background-position: center;}
+        #btn.open:hover{background-image: url('./skin/open_a.png');background-repeat: no-repeat; background-size: 14px 14px; background-position: center;}
+        #btn.close{background-image: url('./skin/close.png');background-repeat: no-repeat; background-size: 14px 14px; background-position: center;}
+        #btn.close:hover{background-image: url('./skin/close_a.png');background-repeat: no-repeat; background-size: 14px 14px; background-position: center;}
+        #showImg{position:absolute;z-index:99999;display: block; box-sizing: border-box;width: 130px;height: 90px;margin: -90px 0 0 -65px; padding: 5px;overflow: hidden;background: #fff;box-shadow: 1px 1px 7px rgba(0, 0, 0, 0.35);border-radius: 2px;}
+        #showImg .div{width: 120px;height: 80px;overflow: hidden; text-align: center;}
+    </style>
+</head>
+<body>
+<div id="container"><div class="btn userIsControl" id="btn_userIsControl">视角跟随: <span class="a">开启</span><span class="c">关闭</span></div><div class="btn close" id="btn"></div></div>
+<div id="panoDesk"></div>
+<div id="showImg">
+    <div class="div">
+        <img id="showImg_img" src="./video/VID_20190905_145607/thumb/1.jpg">
+    </div>
+</div>
+<script type="text/javascript">
+VD.name="VID_20190905_145607"; /*  视频名称  */
+
+/* 都是time=0时的数据；// 已正东方向为0做基准；// 实际方向 -13 = VD.data[0].pan【值 347】 - 360= VD.baseInt + VD.PTF.pan  */
+VD.baseInt= 11; /* // 将视频调到正方向，然后计算; // 计算公式 VD.data[0].pan - VD.PTF.pan */
+
+// 配置码率列表,视频路径
+VD.sceneFilePath='./video/'+VD.name+'/preview.mp4';
+VD.sceneFilePath4K='./video/'+VD.name+'/pano.mp4';
+
+/*初始化开始*/
+window.onload = function () {
+    VD.testAutoPlay(); /* 监测是否允许自动播放 */
+    UtoVRsetConfig(); /*UtoVR Player 配置 VD.sceneFilePath VD.sceneFilePath4K */
+    initLoad(params, function (playMode) { /*console.log(playMode);*/ }, TBConfig);
+};
+window.onresize= function(){ VD.setDivState(); }
+</script>
+</body>
+</html>
